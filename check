@@ -7,36 +7,41 @@
 # 2012, Razvan Deaconescu, razvan.deaconescu@cs.pub.ro
 #
 
-test_dir="tests"
+tests_dir="tests"
 config_file="./config"
+log_base="/tmp/rl-checker-$(date +%F-%T)"
 
 function exec_test() {
-	test_name=$1
-	export _output_file="/tmp/_test"
-	> $_output_file
-	bash -c "source $config_file; source $(pwd)/$test_name"
-	echo "$test_name ---- $? pct"
-	cat $_output_file
-	rm -f $_output_file
+    test_name=$1
+    export output_file="/tmp/_test"
+    export log_file="$log_base/$(basename $test_name).log"
+    > $output_file
+    bash -c "source $config_file; source $(pwd)/$test_name"
+    echo "$test_name ---- $? pct"
+    cat $output_file
+    rm -f $output_file
 }
 
 if test $UID != 0; then
-	echo "Error: check trebuie executat ca 'root'."
-	exit 1
+    echo "Error: check trebuie executat ca 'root'."
+    exit 1
 fi
+
+mkdir "$log_base" > /dev/null 2>&1
 
 if test $# -eq 1; then
-	p=$1
-	test $1 -lt 10 && p="0$p"
-	if test ! -f "$tests_dir/task_$p.sh"; then
-		echo "Test number $p does not exist."
-		exit 1
-	fi
-	exec_test "$tests_dir/task_$p.sh"
-	exit 0
+    p=$1
+    test $1 -lt 10 && p="0$p"
+    if test ! -f "$tests_dir/task_$p"; then
+        echo "Test number $p does not exist."
+        exit 1
+    fi
+    exec_test "$tests_dir/test_$p"
+    exit 0
 fi
 
-list=$(find $tests_dir/ -regex "$tests_dir/task_[0-9][0-9]\.sh" | sort)
+#list=$(find $tests_dir/ -regex "$tests_dir/test_[0-9][0-9]" | sort)
+list=$(find $tests_dir/ -name "test_*" | sort)
 for t in $list; do
-	exec_test "$t"
+    exec_test "$t"
 done
