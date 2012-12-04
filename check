@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#
+# Checker wrapper script
+#
+# 2008-2009, Mircea Bardac, dev@mircea.bardac.net
+# 2012, Razvan Deaconescu, razvan.deaconescu@cs.pub.ro
+#
+
+test_dir="tests"
+config_file="./config"
+
+function exec_test() {
+	test_name=$1
+	export _output_file="/tmp/_test"
+	> $_output_file
+	bash -c "source $config_file; source $(pwd)/$test_name"
+	echo "$test_name ---- $? pct"
+	cat $_output_file
+	rm -f $_output_file
+}
+
+if test $UID != 0; then
+	echo "Error: check trebuie executat ca 'root'."
+	exit 1
+fi
+
+if test $# -eq 1; then
+	p=$1
+	test $1 -lt 10 && p="0$p"
+	if test ! -f "$tests_dir/task_$p.sh"; then
+		echo "Test number $p does not exist."
+		exit 1
+	fi
+	exec_test "$tests_dir/task_$p.sh"
+	exit 0
+fi
+
+list=$(find $tests_dir/ -regex "$tests_dir/task_[0-9][0-9]\.sh" | sort)
+for t in $list; do
+	exec_test "$t"
+done
