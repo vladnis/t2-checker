@@ -1,0 +1,24 @@
+Test suite for RL assignment
+
+This is a framework for running tests for the RL Linux-based assignment. Users
+should only be concerned with the check script; developers are to develop tests
+in the tests/ folder.
+
+Folder structure:
+* check: main script, wrapper over actual tests
+* config: checker configuration file; provides common functions for actual
+          tests
+* tests/: folders with tests
+* test/test_XY: checker script file for task XY (X and Y are digits)
+
+
+= Running the checker
+
+When running the main script, it goes through all test scripts in the tests/
+folder and runs them.
+    ./check
+
+If one desires to only run a certain test script, pass its number to the main
+script. For, example, if one wants to run the test for task 8, one would issue
+the command:
+    ./check 8
