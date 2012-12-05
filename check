@@ -32,7 +32,7 @@ mkdir "$log_base" > /dev/null 2>&1
 if test $# -eq 1; then
     p=$1
     test $1 -lt 10 && p="0$p"
-    if test ! -f "$tests_dir/task_$p"; then
+    if test ! -f "$tests_dir/test_$p"; then
         echo "Test number $p does not exist."
         exit 1
     fi
