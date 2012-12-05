@@ -1,0 +1,6 @@
+#!/bin/bash
+
+log run_ct red ping6 -c 1 2001:67::21:1 || exit 0
+log run_ct blue ping6 -c 1 2001:67:21::2 | exit 1
+
+exit 2
