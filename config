@@ -202,10 +202,11 @@ ipv6_is_connected()
 
 run_ct()
 {
-	host=$1
+	host="$1"
 	shift
-	command=$@
-	ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -l root "$host" "$command"
+	command="$*"
+	echo "command: $command"
+	llxc.py exec "$host" '"'"$command"'"'
 }
 
 cd /root
