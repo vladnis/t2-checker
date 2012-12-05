@@ -205,7 +205,6 @@ run_ct()
 	host="$1"
 	shift
 	command="$*"
-	echo "command: $command"
 	llxc.py exec "$host" '"'"$command"'"'
 }
 
