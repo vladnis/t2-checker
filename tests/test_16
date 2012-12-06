@@ -1,0 +1,40 @@
+#!/bin/bash
+
+rm -fr /root/nfs/data/*
+rm -fr /root/nfs/scripts/*
+
+echo "aaa" > /root/nfs/data/aaa.txt
+echo 'echo "Hello, World"' > /root/nfs/scripts/hello.sh
+sleep 1
+
+run_ct red cat /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
+run_ct red cat /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 1
+run_ct red rm /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 2
+run_ct red rm /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 3
+sleep 1
+log stat /root/nfs/data/aaa.txt && exit 4
+
+echo "aaa" > /root/nfs/data/aaa.txt
+echo 'echo "Hello, World"' > /root/nfs/data/hello.sh
+sleep 1
+
+run_ct green cat /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 5
+run_ct green cat /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 6
+run_ct green rm /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 7
+run_ct green rm /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 8
+sleep 1
+log stat /root/nfs/data/aaa.txt && exit 9
+
+echo "aaa" > /root/nfs/data/aaa.txt
+echo 'echo "Hello, World"' > /root/nfs/data/hello.sh
+sleep 1
+
+run_ct blue cat /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 10
+run_ct blue cat /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 11
+run_ct blue rm /root/nfs/data/aaa.txt 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 12
+run_ct blue rm /root/nfs/scripts/hello.sh 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 13
+sleep 1
+log stat /root/nfs/data/aaa.txt && exit 14
+log stat /root/nfs/scripts/hello.sh && exit 15
+
+exit 16
