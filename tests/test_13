@@ -1,0 +1,19 @@
+#!/bin/bash
+
+log rm -fr /home/picard/Maildir
+su - picard -c 'maildirmake /home/picard/Maildir/' >> $log_file 2>&1
+
+< /dev/urandom tr -d -c 'a-z' | (head -c 20; echo) | tee /tmp/13.msg | mail -s "Task 13" picard >> $log_file 2>&1
+
+sleep 2
+
+# cleanup
+> /var/log/mail.log
+
+log run_ct red '/root/scripts/mail-read-last-message > /tmp/13.msg'
+
+log diff -B --strip-trailing-cr /tmp/13.msg /var/lib/lxc/red/rootfs/tmp/13.msg || exit 0
+
+grep 'imapd' /var/log/mail.log | grep 'picard' >> $log_file 2>&1 || exit 0
+
+exit 1
