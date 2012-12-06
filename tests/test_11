@@ -1,0 +1,22 @@
+#!/bin/bash
+
+log rm -fr /var/www/answers/*
+log mkdir -p /var/www/answers
+log rm -fr /tmp/12/*
+log mkdir -p /tmp/12
+
+for i in $(seq 0 9); do
+    log cp /root/rl-checker.git/tpl/auth-message-template.php /var/www/answers/$i.php
+    word=$(< /dev/urandom tr -d -c 'a-z' | head -c 20)
+    echo "$word" >> /tmp/12/expected.txt
+    sed -i "s/MESSAGE_TEMPLATE/$word/g" /var/www/answers/$i.php
+done
+
+log run_ct red rm -fr /tmp/12/*
+log run_ct red mkdir -p /tmp/12/
+
+run_ct red 'cd /tmp/12/ ; /root/scripts/www-get-messages > /tmp/12/actual.txt' >> $log_file 2> /dev/null
+
+log diff -B /tmp/12/expected.txt /var/lib/lxc/red/rootfs/tmp/12/actual.txt || exit 0
+
+exit 1
