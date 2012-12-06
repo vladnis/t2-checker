@@ -1,0 +1,48 @@
+#!/bin/bash
+
+log rm -fr /tmp/task-12/png/*
+log mkdir -p /tmp/task-12/png
+
+for i in $(seq -f "%02g" 1 20); do
+    < /dev/urandom head -c 20 > /tmp/task-12/png/$i.png
+done
+
+# Cleanup on red.
+run_ct red '> /var/log/vsftpd.log' >> $log_file 2>&1
+run_ct red 'rm -fr /home/arthur/upload/*' >> $log_file 2>&1
+
+log pushd /tmp/task-12/png/
+log /root/scripts/ftp-upload
+log popd
+
+for i in $(seq -f "%02g" 1 20); do
+   log cmp /tmp/task-12/png/$i.png /var/lib/lxc/red/rootfs/home/arthur/upload/$i.png
+   test $? -eq 0 || exit 0
+done
+
+run_ct red "grep 'OK UPLOAD' /var/log/vsftpd.log" | tee -a $log_file | grep 'warning:' && exit 0
+
+
+# Cleanup on red.
+run_ct red '> /var/log/vsftpd.log' >> $log_file 2>&1
+run_ct red 'rm -fr /srv/ftp/download/*' >> $log_file 2>&1
+
+for i in $(seq -f "%02g" 1 20); do
+    < /dev/urandom head -c 20 > /var/lib/lxc/red/rootfs/srv/ftp/download/$i.tar.gz
+done
+
+log rm -fr /tmp/task-12/targz/*
+log mkdir -p /tmp/task-12/targz
+
+log pushd /tmp/task-12/targz/
+log /root/scripts/ftp-download
+log popd
+
+for i in $(seq -f "%02g" 1 20); do
+   log cmp /tmp/task-12/targz/$i.tar.gz /var/lib/lxc/red/rootfs/srv/ftp/download/$i.tar.gz
+   test $? -eq 0 || exit 1
+done
+
+run_ct red "grep 'OK DOWNLOAD' /var/log/vsftpd.log" | tee -a $log_file | grep 'warning:' && exit 1
+
+exit 2
