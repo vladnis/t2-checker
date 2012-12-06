@@ -1,0 +1,19 @@
+#!/bin/bash
+
+>> $log_file 2>&1 su - student -c 'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 r :' || exit 0
+>> $log_file 2>&1 su - student -c 'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 g :' || exit 1
+>> $log_file 2>&1 su - student -c 'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 b :' || exit 2
+
+run_ct red su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 h :'" | tee -a $log_file | grep 'warning:' && exit 3
+run_ct red su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 g :'" | tee -a $log_file | grep 'warning:' && exit 4
+run_ct red su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 b :'" | tee -a $log_file | grep 'warning:' && exit 5
+
+run_ct green su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 h :'" | tee -a $log_file | grep 'warning:' && exit 6
+run_ct green su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 r :'" | tee -a $log_file | grep 'warning:' && exit 7
+run_ct green su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 b :'" | tee -a $log_file | grep 'warning:' && exit 8
+
+run_ct blue su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 h :'" | tee -a $log_file | grep 'warning:' && exit 9
+run_ct blue su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 r :'" | tee -a $log_file | grep 'warning:' && exit 10
+run_ct blue su - student -c "'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 g :'" | tee -a $log_file | grep 'warning:' && exit 11
+
+exit 12
