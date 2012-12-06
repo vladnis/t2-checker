@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "GET /" | openssl s_client -connect host:443 -quiet >> $log_file 2>&1 || exit 0
+echo "QUIT" | openssl s_client -starttls smtp -crlf -connect host:25 -quiet >> $log_file 2>&1 || exit 1
+echo "a logout" | openssl s_client -crlf -connect host:993 -quiet >> $log_file 2>&1 || exit 2
+echo "QUIT" | openssl s_client -starttls ftp -connect red:21 -quiet >> $log_file 2>&1 || exit 3
+
+exit 4
