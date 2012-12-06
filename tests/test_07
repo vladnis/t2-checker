@@ -1,0 +1,6 @@
+#!/bin/bash
+
+log run_ct red ping -c 1 5.5.5.1 || exit 0
+log run_ct blue ping -c 1 5.5.5.2 || exit 1
+
+exit 2
