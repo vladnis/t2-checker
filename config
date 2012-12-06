@@ -29,7 +29,7 @@ function noout()
 
 function log()
 {
-	 >> "$log_file" 2>&1 $@
+	>> "$log_file" 2>&1 $@
 }
 
 function check_return()
