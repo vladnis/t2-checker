@@ -17,6 +17,8 @@ Folder structure:
 
 The checker must be run in the current folder.
 
+The checker may be only run by the root user.
+
 When running the main script, it goes through all test scripts in the tests/
 folder and runs them.
     ./check
