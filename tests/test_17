@@ -1,0 +1,15 @@
+#!/bin/bash
+
+run_ct red "ip a s lo | grep '10\.0\.0\.1'" | grep "warning:" > /dev/null 2>&1 && exit 0
+
+log run_ct red 'pkill -f nc'
+log run_ct red rm /tmp/17.out
+log run_ct red 'nc -l 10.0.0.1 12345 > /tmp/17.out &'
+
+sleep 1
+log run_ct green 'echo anaaremere | nc 10.0.0.1 12345'
+
+sleep 1
+diff -B --strip-trailing-cr <(echo anaaremere) /var/lib/lxc/red/rootfs/tmp/17.out || exit 0
+
+exit 1
