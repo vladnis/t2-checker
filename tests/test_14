@@ -1,0 +1,21 @@
+#!/bin/bash
+
+> /var/log/iptables.log
+
+log run_ct blue wget http://host -o /dev/null -O /dev/null
+sleep 1
+grep 'iptables-blue-web-packets' /var/log/iptables.log | grep 'WINDOW' >> $log_file 2>&1 || exit 0
+
+> /var/log/iptables.log
+log run_ct blue ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 h :
+sleep 1
+size=$(stat -c "%s" /var/log/iptables.log)
+test $size -eq 0 || exit 1
+
+> /var/log/iptables.log
+log run_ct green wget http://host -o /dev/null -O /dev/null
+sleep 1
+size=$(stat -c "%s" /var/log/iptables.log)
+test $size -eq 0 || exit 2
+
+exit 3
