@@ -5,8 +5,6 @@
 # Current directory is set to the home dir of the user executing check.
 #
 
-username=$(cat /root/info 2> /dev/null)
-
 function notify()
 {
 	echo -e "  - Notification: $@" >> $output_file
@@ -207,5 +205,3 @@ run_ct()
 	command="$*"
 	llxc.py exec "$host" '"'"$command"'"'
 }
-
-cd /root
