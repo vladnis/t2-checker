@@ -6,7 +6,7 @@ log rm -fr /tmp/12/*
 log mkdir -p /tmp/12
 
 for i in $(seq 0 9); do
-    log cp /root/rl-checker.git/tpl/auth-message-template.php /var/www/answers/$i.php
+    log cp tpl/auth-message-template.php /var/www/answers/$i.php
     word=$(< /dev/urandom tr -d -c 'a-z' | head -c 20)
     echo "$word" >> /tmp/12/expected.txt
     sed -i "s/MESSAGE_TEMPLATE/$word/g" /var/www/answers/$i.php
