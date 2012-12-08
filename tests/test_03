@@ -1,6 +1,6 @@
 #!/bin/bash
 
-run_ct red ping6 -c 1 2001:67:21::1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
-run_ct blue ping6 -c 1 2001:67:21::2 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 1
+run_ct 1.1.1.2 ping6 -c 1 2001:67:21::1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
+run_ct 3.3.3.2 ping6 -c 1 2001:67:21::2 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 1
 
 exit 2

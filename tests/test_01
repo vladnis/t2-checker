@@ -4,10 +4,10 @@ log ipv4_is_connected 1.1.1.2 || exit 0
 log ipv4_is_connected 2.2.2.2 || exit 1
 log ipv4_is_connected 3.3.3.2 || exit 2
 
-run_ct red ping -c 1 1.1.1.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 3
-run_ct green ping -c 1 2.2.2.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 4
-run_ct blue ping -c 1 3.3.3.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 5
-run_ct red ping -c 1 4.4.4.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 6
-run_ct blue ping -c 1 4.4.4.2 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 7
+run_ct 1.1.1.2 ping -c 1 1.1.1.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 3
+run_ct 2.2.2.2 ping -c 1 2.2.2.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 4
+run_ct 3.3.3.2 ping -c 1 3.3.3.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 5
+run_ct 1.1.1.2 ping -c 1 4.4.4.1 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 6
+run_ct 3.3.3.2 ping -c 1 4.4.4.2 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 7
 
 exit 8
