@@ -8,7 +8,7 @@ run_ct green nc -w 2 host 993 2>&1 | tee -a $log_file | grep 'warning:' > /dev/n
 run_ct red nc -w 2 host 993 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 5
 run_ct blue nc -w 2 red 21 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 6
 run_ct green nc -w 2 red 21 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 7
-run_ct red nc -w 2 green 6969 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 8
+run_ct red nc -w 2 green 6969 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 8
 run_ct blue nc -w 2 green 6969 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 9
 
 exit 10
