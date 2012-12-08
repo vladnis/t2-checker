@@ -8,7 +8,7 @@ grep -w 'imap' /tmp/out | grep -w 'Courier' > /dev/null 2>&1 || exit 3
 grep -w 'ssl/imap' /tmp/out | grep -w 'Courier' > /dev/null 2>&1 || exit 4
 
 log /etc/init.d/apache2 stop
-run_ct red /root/scripts/get-host-ports | tee -a $log_file > /tmp/out
+run_ct red /root/scripts/get-host-ports 2>&1 | tee -a $log_file > /tmp/out
 grep -w 'http' /tmp/out | grep -w 'Apache' && exit 5
 log /etc/init.d/apache2 start
 
