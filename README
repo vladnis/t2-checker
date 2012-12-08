@@ -30,3 +30,5 @@ the command:
 
 Results are printed out after each test run. For each test you get the number
 of points and the maximum number of points. A total is computed at the end.
+
+Tests take between 1 and 15 seconds to run. Please be patient.
