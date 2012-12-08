@@ -1,10 +1,11 @@
 #!/bin/bash
 
 > /var/log/iptables.log
+log chown syslog:adm /var/log/iptables.log
 
 log run_ct blue wget http://host -o /dev/null -O /dev/null
 sleep 1
-grep 'iptables-blue-web-packets' /var/log/iptables.log | grep 'WINDOW' >> $log_file 2>&1 || exit 0
+grep 'iptables-blue-web-packets' /var/log/iptables.log 2>&1 | grep 'WINDOW' >> $log_file 2>&1 || exit 0
 
 > /var/log/iptables.log
 log run_ct blue ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 h :
