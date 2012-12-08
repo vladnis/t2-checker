@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Force remount in case of synchronization issues.
+log run_ct red timeout 3 mount -a
+log run_ct green timeout 3 mount -a
+log run_ct blue timeout 3 mount -a
+
 rm -fr /root/nfs/data/*
 rm -fr /root/nfs/scripts/*
 
