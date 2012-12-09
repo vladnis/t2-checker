@@ -1,5 +1,9 @@
 #!/bin/bash
 
+run_ct red ping -c 1 host 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
+run_ct green ping -c 1 host 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
+run_ct blue ping -c 1 host 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 0
+
 run_ct green nc -w 2 host 25 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 0
 run_ct red nc -w 2 host 25 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 1
 run_ct green nc -w 2 host 143 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 || exit 2
