@@ -4,6 +4,6 @@ run_ct red nc -w 2 host 50222 2>&1 | tee -a $log_file | grep 'SSH' > /dev/null 2
 run_ct red nc -w 2 host 50322 2>&1 | tee -a $log_file | grep 'SSH' > /dev/null 2>&1 || exit 1
 run_ct green nc -w 2 host 50122 2>&1 | tee -a $log_file | grep 'SSH' > /dev/null 2>&1 || exit 2
 run_ct green nc -w 2 host 50121 2>&1 | tee -a $log_file | grep 'vsFTPd' > /dev/null 2>&1 || exit 3
-run_ct red nc -w 2 host 50269 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1> && exit 4
+run_ct blue nc -w 2 host 50269 2>&1 | tee -a $log_file | grep 'warning:' > /dev/null 2>&1 && exit 4
 
 exit 5
