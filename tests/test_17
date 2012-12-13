@@ -2,7 +2,7 @@
 
 run_ct red "ip a s lo | grep '10\.0\.0\.1'" 2>&1 | grep "warning:" > /dev/null 2>&1 && exit 0
 
-log run_ct red rm /tmp/17.out
+log run_ct green rm /tmp/17.out
 log run_ct green 'ssh -o PasswordAuthentication=no -o StrictHostKeyChecking=no -o ConnectTimeout=3 10.0.0.1 hostname > /tmp/17.out'
 
 diff -B --strip-trailing-cr <(echo red) /var/lib/lxc/green/rootfs/tmp/17.out >> $log_file 2>&1 || exit 0
